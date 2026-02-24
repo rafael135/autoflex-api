@@ -1,0 +1,1 @@
+CREATE INDEX idx_product_value ON product(value)

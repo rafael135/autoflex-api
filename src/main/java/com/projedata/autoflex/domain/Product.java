@@ -1,0 +1,70 @@
+package com.projedata.autoflex.domain;
+
+import java.util.List;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "product")
+public class Product extends PanacheEntityBase {
+    
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    public Long id;
+    
+    @Column(nullable = false, unique = true)
+    public String name;
+
+    @Column(nullable = false)
+    public BigDecimal value;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<ProductMaterial> materials = new ArrayList<>();
+
+    protected Product() {}
+
+    /**
+     * Factory method to create a new Product instance with the specified name. This method validates the input
+     * and initializes the product with an empty list of material requirements.
+     * @param name the name of the product, must not be null or empty
+     * @return a new Product instance with the given name and no material requirements
+     */
+    public static Product create(String name, BigDecimal value) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be null or empty");
+        }
+
+        if (value == null || value.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Product value cannot be null or negative");
+        }
+        Product product = new Product();
+        product.name = name;
+        product.value = value;
+        return product;
+    }
+
+    /**
+     * Adds a material requirement to the product. This method creates a new ProductMaterial association
+     * between the product and the specified raw material with the given required quantity.
+     * @param material the raw material to be added as a requirement
+     * @param requiredQuantity the quantity of the raw material required for the product, must be greater than zero
+     */
+    public void addMaterial(RawMaterial material, int requiredQuantity) {
+        if (requiredQuantity <= 0) {
+            throw new IllegalArgumentException("Required quantity must be greater than zero");
+        }
+
+        ProductMaterial association = new ProductMaterial(this, material, requiredQuantity);
+        this.materials.add(association);
+    }
+}

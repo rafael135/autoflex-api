@@ -1,0 +1,5 @@
+CREATE TABLE raw_material (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(255) NOT NULL,
+    stock_quantity INT NOT NULL
+);
