@@ -15,7 +15,7 @@ public class RawMaterial {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     public Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     public String name;
 
     @Column(name = "stock_quantity", nullable = false)
@@ -30,6 +30,7 @@ public class RawMaterial {
      * @param name the name of the raw material, must not be null or empty
      * @param initialStock the initial stock quantity for the raw material, must be non-negative
      * @return a new RawMaterial instance with the given name and initial stock quantity
+     * @throws IllegalArgumentException if the name is null or empty, or if the initial stock quantity is null or negative
      */
     public static RawMaterial create(String name, Integer initialStock) {
         if(name == null || name.trim().isEmpty()) {
@@ -62,5 +63,29 @@ public class RawMaterial {
         }
 
         this.stockQuantity -= quantity;
+    }
+
+    /**
+     * Sets the stock quantity for this raw material. This method validates the input stock quantity to ensure it is not null or negative before updating the stock quantity.
+     * @param stockQuantity the new stock quantity to set, must be non-negative
+     * @throws IllegalArgumentException if the stock quantity is null or negative
+     */
+    public void setStockQuantity(Integer stockQuantity) {
+        if (stockQuantity == null || stockQuantity < 0) {
+            throw new IllegalArgumentException("Stock quantity cannot be null or negative");
+        }
+        this.stockQuantity = stockQuantity;
+    }
+
+    /**
+     * Sets the name of this raw material. This method validates the input name to ensure it is not null or empty before updating the name.
+     * @param name the new name to set for the raw material, must not be null or empty
+     * @throws IllegalArgumentException if the name is null or empty
+     */
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Raw material name cannot be null or empty");
+        }
+        this.name = name;
     }
 }

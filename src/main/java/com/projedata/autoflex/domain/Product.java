@@ -21,16 +21,30 @@ public class Product {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     public Long id;
     
-    @Column(nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     public String name;
 
-    @Column(nullable = false)
+    @Column(name = "value", nullable = false)
     public BigDecimal value;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<ProductMaterial> materials = new ArrayList<>();
 
     protected Product() {}
+
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be null or empty");
+        }
+        this.name = name;
+    }
+
+    public void setValue(BigDecimal value) {
+        if (value == null || value.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Product value cannot be null or negative");
+        }
+        this.value = value;
+    }
 
     /**
      * Factory method to create a new Product instance with the specified name. This method validates the input
@@ -66,5 +80,13 @@ public class Product {
 
         ProductMaterial association = new ProductMaterial(this, material, requiredQuantity);
         this.materials.add(association);
+    }
+
+    /**
+     * Removes a material requirement from the product. This method removes the specified ProductMaterial association from the product's list of material requirements.
+     * @param productMaterial the ProductMaterial association to be removed from the product's material requirements
+     */
+    public void removeMaterial(ProductMaterial productMaterial) {
+        this.materials.remove(productMaterial);
     }
 }

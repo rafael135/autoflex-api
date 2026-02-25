@@ -40,4 +40,16 @@ public class ProductMaterial {
         this.rawMaterial = rawMaterial;
         this.requiredQuantity = requiredQuantity;
     }
+
+    /**
+     * Sets the required quantity of raw material for this product material association. This method validates the input quantity to ensure it is greater than zero before updating the required quantity.
+     * @param requiredQuantity the quantity of the raw material required for the product, must be greater than zero
+     * @throws IllegalArgumentException if the required quantity is not greater than zero
+     */
+    public void setRequiredQuantity(int requiredQuantity) {
+        if (requiredQuantity <= 0) {
+            throw new IllegalArgumentException("Required quantity must be greater than zero");
+        }
+        this.requiredQuantity = requiredQuantity;
+    }
 }

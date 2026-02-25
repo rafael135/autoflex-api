@@ -128,4 +128,53 @@ public class RawMaterialTest {
         // Assert
         assertEquals("Insufficient stock for raw material: " + material.name, exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when setting negative or null stock quantity")
+    void shouldThrowExceptionWhenSettingNegativeOrNullStockQuantity() {
+        // Arrange
+        RawMaterial material = RawMaterial.create("Rubber", 30);
+        Integer newStockQuantity = -5;
+
+        // Act
+        IllegalArgumentException exception1 = assertThrows(
+            IllegalArgumentException.class,
+            () -> material.setStockQuantity(newStockQuantity),
+            "Expected setStockQuantity() to throw an exception, but it didn't"
+        );
+        IllegalArgumentException exception2 = assertThrows(
+            IllegalArgumentException.class,
+            () -> material.setStockQuantity(null),
+            "Expected setStockQuantity() to throw an exception, but it didn't"
+        );
+
+        // Assert
+        assertEquals("Stock quantity cannot be null or negative", exception1.getMessage());
+        assertEquals("Stock quantity cannot be null or negative", exception2.getMessage());
+    }
+
+    
+    @Test
+    @DisplayName("Should throw IllegalArgumentException when setting null or empty name")
+    void shouldThrowExceptionWhenSettingNullOrEmptyName() {
+        // Arrange
+        RawMaterial material = RawMaterial.create("Wood", 40);
+        String newName = "";
+
+        // Act
+        IllegalArgumentException exception1 = assertThrows(
+            IllegalArgumentException.class,
+            () -> material.setName(newName),
+            "Expected setName() to throw an exception, but it didn't"
+        );
+        IllegalArgumentException exception2 = assertThrows(
+            IllegalArgumentException.class,
+            () -> material.setName(null),
+            "Expected setName() to throw an exception, but it didn't"
+        );
+
+        // Assert
+        assertEquals("Raw material name cannot be null or empty", exception1.getMessage());
+        assertEquals("Raw material name cannot be null or empty", exception2.getMessage());
+    }
 }
