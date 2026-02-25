@@ -1,6 +1,5 @@
 package com.projedata.autoflex.domain;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,7 +16,7 @@ import jakarta.persistence.UniqueConstraint;
     name = "product_material",
     uniqueConstraints = @UniqueConstraint(columnNames = { "product_id", "raw_material_id" })
 )
-public class ProductMaterial extends PanacheEntityBase {
+public class ProductMaterial {
     
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -34,9 +33,7 @@ public class ProductMaterial extends PanacheEntityBase {
     @Column(name = "required_quantity", nullable = false)
     public int requiredQuantity;
 
-    protected ProductMaterial() {
-
-    }
+    protected ProductMaterial() {}
 
     ProductMaterial(Product product, RawMaterial rawMaterial, Integer requiredQuantity) {
         this.product = product;

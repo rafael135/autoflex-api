@@ -4,7 +4,6 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "product")
-public class Product extends PanacheEntityBase {
+public class Product {
     
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -37,6 +36,7 @@ public class Product extends PanacheEntityBase {
      * Factory method to create a new Product instance with the specified name. This method validates the input
      * and initializes the product with an empty list of material requirements.
      * @param name the name of the product, must not be null or empty
+     * @param value the value of the product, must not be null or negative
      * @return a new Product instance with the given name and no material requirements
      */
     public static Product create(String name, BigDecimal value) {
