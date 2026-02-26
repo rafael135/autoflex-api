@@ -10,6 +10,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ProductMaterialRepository implements PanacheRepository<ProductMaterial> {
     public List<ProductMaterial> findByProductId(Long productId) {
-        return this.find("product.id", productId).list();
+        return this.find("Product.id", productId).list();
     }
 }

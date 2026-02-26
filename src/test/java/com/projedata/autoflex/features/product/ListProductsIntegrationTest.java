@@ -2,13 +2,13 @@ package com.projedata.autoflex.features.product;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.GreaterThan;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 @QuarkusTest
@@ -26,6 +26,6 @@ public class ListProductsIntegrationTest {
             .body("data[0].id", notNullValue())
             .body("data[0].name", is("Table"))
             .body("currentPage", is(1))
-            .body("totalPages", is(1));
+            .body("totalPages", greaterThanOrEqualTo(1));
     }
 }

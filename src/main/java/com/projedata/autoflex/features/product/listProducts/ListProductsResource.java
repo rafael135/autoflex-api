@@ -9,7 +9,6 @@ import com.projedata.autoflex.features.shared.PaginatedDto;
 import com.projedata.autoflex.infrastructure.repositories.ProductRepository;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.panache.common.Sort;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.ws.rs.DefaultValue;
