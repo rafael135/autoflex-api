@@ -54,7 +54,5 @@ public class DatabaseSeeder {
         shelf.addMaterial(screws, 10);
 
         this.productRepository.persist(List.of(chair, table, shelf));
-
-
     }
 }

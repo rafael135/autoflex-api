@@ -1,6 +1,9 @@
 package com.projedata.autoflex.domain;
 
 import java.util.List;
+
+import org.hibernate.annotations.BatchSize;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -28,6 +31,7 @@ public class Product {
     public BigDecimal value;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 20)
     public List<ProductMaterial> materials = new ArrayList<>();
 
     protected Product() {}
