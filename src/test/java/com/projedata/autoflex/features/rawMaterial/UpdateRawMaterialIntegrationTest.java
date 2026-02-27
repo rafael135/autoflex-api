@@ -12,6 +12,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,15 @@ public class UpdateRawMaterialIntegrationTest {
         this.rawMaterialRepository.persist(rawMaterial);
         this.rawMaterialRepository.flush();
         this.testRawMaterial = rawMaterial;
+    }
+
+    @Transactional
+    @AfterEach
+    public void cleanup() {
+        RawMaterial existing = this.rawMaterialRepository.findById(this.testRawMaterial.id);
+        if (existing != null) {
+            this.rawMaterialRepository.delete(existing);
+        }
     }
 
     @Test
