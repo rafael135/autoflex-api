@@ -1,5 +1,6 @@
 package com.projedata.autoflex.infrastructure.repositories;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.projedata.autoflex.domain.ProductMaterial;

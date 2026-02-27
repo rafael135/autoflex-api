@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -192,5 +193,24 @@ public class ProductTest {
         ProductMaterial pm = product.materials.get(0);
         assert pm.rawMaterial.equals(fabric);
         assert pm.requiredQuantity == requiredQuantity;
+    }
+
+
+    @Test
+    @DisplayName("Should calculate ROI correctly for a product with materials")
+    void shouldCalculateRoiCorrectlyForProductWithMaterials() {
+        // Arrange
+        Product product = Product.create("Dining Set", new BigDecimal("999.99"));
+        RawMaterial wood = RawMaterial.create("Wood", 100);
+        RawMaterial metal = RawMaterial.create("Metal", 50);
+        product.addMaterial(wood, 10);
+        product.addMaterial(metal, 5);
+        BigDecimal expectedRoi = new BigDecimal("66.666").setScale(2, RoundingMode.HALF_UP);
+
+        // Act
+        BigDecimal actualRoi = product.calculateRoi();
+
+        // Assert
+        assert actualRoi.compareTo(expectedRoi) == 0;
     }
 }

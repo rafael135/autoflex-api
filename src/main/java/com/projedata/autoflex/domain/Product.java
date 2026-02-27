@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import jakarta.persistence.CascadeType;
@@ -92,5 +93,21 @@ public class Product {
      */
     public void removeMaterial(ProductMaterial productMaterial) {
         this.materials.remove(productMaterial);
+    }
+
+
+    /**
+     * Calculates the Return on Investment (ROI) for the product based on its value and the total quantity of raw materials required.
+     * The ROI is calculated as the product's value divided by the total quantity of raw materials required. If the product does not require any raw materials, the ROI is equal to the product's value.
+     * @return the calculated ROI for the product as a BigDecimal
+     */
+    public BigDecimal calculateRoi() {
+        int totalMaterialsRequired = this.materials.stream()
+            .mapToInt(m -> m.requiredQuantity)
+            .sum();
+            
+        if (totalMaterialsRequired == 0) return this.value;
+        
+        return this.value.divide(BigDecimal.valueOf(totalMaterialsRequired), 2, RoundingMode.HALF_UP);
     }
 }
