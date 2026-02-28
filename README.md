@@ -1,78 +1,67 @@
-# autoflex-api
+﻿# autoflex-api
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+REST API desenvolvida com **Quarkus** e **PostgreSQL** para controle de produção industrial  gerenciamento de produtos, materias-primas e cálculo da capacidade produtiva com base no estoque disponível.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## Pré-requisitos
 
-## Running the application in dev mode
+- Java 17+
+- Maven
+- Docker
 
-You can run your application in dev mode that enables live coding using:
+## Subindo o banco de dados
 
-```shell script
+```shell
+docker-compose up -d
+```
+
+Isso sobe um container PostgreSQL com as seguintes credenciais:
+
+| Parametro | Valor          |
+|-----------|----------------|
+| Host      | localhost:5432 |
+| Database  | autoflex_db    |
+| User      | autoflex       |
+| Password  | autoflex123    |
+
+As migrations são aplicadas automaticamente via **Flyway** ao iniciar a aplicacão.
+
+## Rodando a aplicacão
+
+```shell
 ./mvnw quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+A API estara disponivel em `http://localhost:8080`.
 
-## Packaging and running the application
+## Rodando os testes
 
-The application can be packaged using:
-
-```shell script
-./mvnw package
+```shell
+./mvnw test
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+---
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+## Decisões de projeto
 
-If you want to build an _über-jar_, execute the following command:
+### Estrutura por features
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
+O codigo e organizado por feature (ex: `features/product`, `features/rawMaterial`, `features/production`) em vez de por camada tecnica. Isso facilita localizar e manter tudo relacionado a um caso de uso no mesmo lugar.
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+### Cálculo da capacidade produtiva  Strategy Pattern
 
-## Creating a native executable
+O endpoint `GET /api/production` aceita um query param `strategy` para definir o critério de priorização:
 
-You can create a native executable using:
+| Valor | Estratégia                    | Criterio                                                                  |
+|-------|-------------------------------|---------------------------------------------------------------------------|
+| `0`   | `HighestPriceStrategy`        | Prioriza produtos pelo **maior valor de venda**, conforme requisito RF004  |
+| `1`   | `HighestEfficiencyStrategy`   | Prioriza produtos pelo **maior ROI** (valor / custo de materia-prima)     |
 
-```shell script
-./mvnw package -Dnative
-```
+A estrategia padrão (`0`) atende diretamente ao requisito do teste: _"a priorização deve ser pelos produtos de maior valor"_.
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+A `HighestEfficiencyStrategy` foi implementada como extensao além do requisito, pois em cenarios reais priorizar pelo maior valor absoluto pode desperdiçar materia-prima cara em produtos de baixa margem. O ROI oferece uma visão mais equilibrada da produção.
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
+Ambas as estrategias implementam a interface `IProductionCalculationStrategy`, tornando simples adicionar novos critérios sem alterar o código existente.
 
-You can then execute your native executable with: `./target/autoflex-api-1.0.0-SNAPSHOT-runner`
+### Migrations com Flyway
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- Hibernate Validator ([guide](https://quarkus.io/guides/validation)): Validate object properties (field, getter) and method parameters for your beans (REST, CDI, Jakarta Persistence)
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-
-## Provided Code
-
-### Hibernate ORM
-
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+O schema do banco é versionado via Flyway, garantindo rastreabilidade e reprodutibilidade do ambiente em qualquer máquina.
