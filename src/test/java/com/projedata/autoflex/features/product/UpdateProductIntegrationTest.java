@@ -144,7 +144,7 @@ public class UpdateProductIntegrationTest {
         String rawMaterialPayload = """
             {
                 "name": "TestRawMaterial",
-                "initialStock": 100
+                "stockQuantity": 100
             }
         """;
 
@@ -193,7 +193,7 @@ public class UpdateProductIntegrationTest {
         String rawMaterialPayload = """
             {
                 "name": "TestRawMaterialForRemoval",
-                "initialStock": 100
+                "stockQuantity": 100
             }
         """;
 
@@ -265,7 +265,7 @@ public class UpdateProductIntegrationTest {
             String rawMaterialPayload1 = """
                 {
                     "name": "TestRawMaterial1",
-                    "initialStock": 100
+                    "stockQuantity": 100
                 }
             """;
     
@@ -282,7 +282,7 @@ public class UpdateProductIntegrationTest {
             String rawMaterialPayload2 = """
                 {
                     "name": "TestRawMaterial2",
-                    "initialStock": 100
+                    "stockQuantity": 100
                 }
             """;
     
@@ -364,7 +364,7 @@ public class UpdateProductIntegrationTest {
         String rawMaterialPayload = """
             {
                 "name": "TestRawMaterialForQuantityUpdate",
-                "initialStock": 100
+                "stockQuantity": 100
             }
         """;
 

@@ -82,7 +82,7 @@ public class DeleteProductIntegrationTest {
             .body("""
                 {
                     "name": "MaterialForProductDeletion",
-                    "initialStock": 50
+                    "stockQuantity": 50
                 }
             """)
         .when()

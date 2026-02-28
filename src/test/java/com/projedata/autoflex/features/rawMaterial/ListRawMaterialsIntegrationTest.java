@@ -22,7 +22,7 @@ public class ListRawMaterialsIntegrationTest {
         String payload = """
             {
                 "name": "Listing Test Material",
-                "initialStock": 25
+                "stockQuantity": 25
             }
         """;
 
@@ -68,7 +68,7 @@ public class ListRawMaterialsIntegrationTest {
             .body("""
                 {
                     "name": "Pagination Material A",
-                    "initialStock": 10
+                    "stockQuantity": 10
                 }
             """)
         .when()
@@ -81,7 +81,7 @@ public class ListRawMaterialsIntegrationTest {
             .body("""
                 {
                     "name": "Pagination Material B",
-                    "initialStock": 20
+                    "stockQuantity": 20
                 }
             """)
         .when()
@@ -147,7 +147,7 @@ public class ListRawMaterialsIntegrationTest {
             .body("""
                 {
                     "name": "%s",
-                    "initialStock": 15
+                    "stockQuantity": 15
                 }
             """.formatted(uniqueName))
         .when()

@@ -29,7 +29,7 @@ public class CreateRawMaterialResource {
     @POST
     @Transactional
     public Response create(CreateRawMaterialCommand command) {
-        RawMaterial rawMaterial = RawMaterial.create(command.name(), command.initialStock());
+        RawMaterial rawMaterial = RawMaterial.create(command.name(), command.stockQuantity());
 
         this.repository.persist(rawMaterial);
 

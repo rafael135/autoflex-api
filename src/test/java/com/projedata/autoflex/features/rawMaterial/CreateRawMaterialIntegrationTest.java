@@ -19,7 +19,7 @@ public class CreateRawMaterialIntegrationTest {
         String payload = """
             {
                 "name": "Steel Bar",
-                "initialStock": 50
+                "stockQuantity": 50
             }
         """;
 
@@ -36,12 +36,12 @@ public class CreateRawMaterialIntegrationTest {
     }
 
     @Test
-    @DisplayName("Should create a raw material with zero initial stock and return 201 Created")
-    void shouldCreateRawMaterialWithZeroInitialStockAndReturn201() {
+    @DisplayName("Should create a raw material with zero stock quantity and return 201 Created")
+    void shouldCreateRawMaterialWithZeroStockQuantityAndReturn201() {
         String payload = """
             {
                 "name": "Empty Stock Material",
-                "initialStock": 0
+                "stockQuantity": 0
             }
         """;
 
@@ -63,7 +63,7 @@ public class CreateRawMaterialIntegrationTest {
         String payload = """
             {
                 "name": "",
-                "initialStock": 10
+                "stockQuantity": 10
             }
         """;
 
@@ -81,7 +81,7 @@ public class CreateRawMaterialIntegrationTest {
     void shouldReturn400WhenCreatingWithNullName() {
         String payload = """
             {
-                "initialStock": 10
+                "stockQuantity": 10
             }
         """;
 
@@ -95,12 +95,12 @@ public class CreateRawMaterialIntegrationTest {
     }
 
     @Test
-    @DisplayName("Should return 400 Bad Request when creating a raw material with negative initial stock")
-    void shouldReturn400WhenCreatingWithNegativeInitialStock() {
+    @DisplayName("Should return 400 Bad Request when creating a raw material with negative stock quantity")
+    void shouldReturn400WhenCreatingWithNegativeStockQuantity() {
         String payload = """
             {
                 "name": "Invalid Material",
-                "initialStock": -1
+                "stockQuantity": -1
             }
         """;
 
@@ -114,8 +114,8 @@ public class CreateRawMaterialIntegrationTest {
     }
 
     @Test
-    @DisplayName("Should return 400 Bad Request when creating a raw material with null initial stock")
-    void shouldReturn400WhenCreatingWithNullInitialStock() {
+    @DisplayName("Should return 400 Bad Request when creating a raw material with null stock quantity")
+    void shouldReturn400WhenCreatingWithNullStockQuantity() {
         String payload = """
             {
                 "name": "No Stock Material"

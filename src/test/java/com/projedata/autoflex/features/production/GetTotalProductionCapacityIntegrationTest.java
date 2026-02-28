@@ -87,7 +87,7 @@ public class GetTotalProductionCapacityIntegrationTest {
         String ironPayload = """
             {
                 "name": "Prod_Iron_T3",
-                "initialStock": 60
+                "stockQuantity": 60
             }
         """;
 
@@ -135,7 +135,7 @@ public class GetTotalProductionCapacityIntegrationTest {
         String steelPayload = """
             {
                 "name": "Prod_Steel_T4",
-                "initialStock": 40
+                "stockQuantity": 40
             }
         """;
 
@@ -152,7 +152,7 @@ public class GetTotalProductionCapacityIntegrationTest {
         String leatherPayload = """
             {
                 "name": "Prod_Leather_T4",
-                "initialStock": 30
+                "stockQuantity": 30
             }
         """;
 
@@ -219,7 +219,7 @@ public class GetTotalProductionCapacityIntegrationTest {
         String woodPayload = """
             {
                 "name": "Prod_Wood_T5",
-                "initialStock": 100
+                "stockQuantity": 100
             }
         """;
 
@@ -236,7 +236,7 @@ public class GetTotalProductionCapacityIntegrationTest {
         String nailsPayload = """
             {
                 "name": "Prod_Nails_T5",
-                "initialStock": 30
+                "stockQuantity": 30
             }
         """;
 
@@ -288,7 +288,7 @@ public class GetTotalProductionCapacityIntegrationTest {
         String bronzePayload = """
             {
                 "name": "Prod_Bronze_T6",
-                "initialStock": 30
+                "stockQuantity": 30
             }
         """;
 
@@ -362,7 +362,7 @@ public class GetTotalProductionCapacityIntegrationTest {
         String bronzePayload = """
             {
                 "name": "Prod_Bronze_T7",
-                "initialStock": 30
+                "stockQuantity": 30
             }
         """;
 
@@ -429,7 +429,7 @@ public class GetTotalProductionCapacityIntegrationTest {
         String platinumPayload = """
             {
                 "name": "Prod_Platinum_T8",
-                "initialStock": 5
+                "stockQuantity": 5
             }
         """;
 
