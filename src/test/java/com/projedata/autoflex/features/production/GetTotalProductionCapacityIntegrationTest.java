@@ -82,6 +82,35 @@ public class GetTotalProductionCapacityIntegrationTest {
     // --- strategy=0 (HighestPriceStrategy) ---
 
     @Test
+    @DisplayName("Should ignore products that have no material requirements to prevent overflow")
+    void shouldIgnoreProductWithoutMaterials_HighestPrice() {
+        int emptyProductId = RestAssured.given()
+            .contentType(ContentType.JSON)
+            .body("""
+                {
+                    "name": "Prod_Freestanding_T1",
+                    "value": 999.00,
+                    "materials": []
+                }
+            """
+            )
+        .when()
+            .post("/api/products")
+        .then()
+            .statusCode(201)
+            .extract().path("id");
+        createdProductIds.add(emptyProductId);
+
+        RestAssured.given()
+            .queryParam("strategy", 0)
+        .when()
+            .get("/api/production")
+        .then()
+            .statusCode(200)
+            .body("products.name", not(hasItem("Prod_Freestanding_T1")));
+    }
+
+    @Test
     @DisplayName("Should calculate correct production capacity for a single product with one material (strategy=0)")
     void shouldCalculateForSingleProductWithOneMaterial_HighestPrice() {
         String ironPayload = """

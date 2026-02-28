@@ -28,6 +28,10 @@ public class HighestEfficiencyStrategy implements IProductionCalculationStrategy
         List<ProductDetailDto> productDetails = new ArrayList<>();
 
         for (Product product : products) {
+            if (product.materials == null || product.materials.isEmpty()) {
+                continue;
+            }
+
             Integer maxProductionCapacity = Integer.MAX_VALUE;
 
             for (ProductMaterial material : product.materials) {

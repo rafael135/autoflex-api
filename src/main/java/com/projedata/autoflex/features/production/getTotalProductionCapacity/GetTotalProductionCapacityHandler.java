@@ -8,10 +8,10 @@ import com.projedata.autoflex.features.production.getTotalProductionCapacity.dto
 import com.projedata.autoflex.features.production.getTotalProductionCapacity.services.HighestEfficiencyStrategy;
 import com.projedata.autoflex.features.production.getTotalProductionCapacity.services.HighestPriceStrategy;
 import com.projedata.autoflex.features.production.getTotalProductionCapacity.services.IProductionCalculationStrategy;
-import com.projedata.autoflex.infrastructure.repositories.ProductMaterialRepository;
 import com.projedata.autoflex.infrastructure.repositories.ProductRepository;
 import com.projedata.autoflex.infrastructure.repositories.RawMaterialRepository;
 
+import jakarta.inject.Inject;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.ws.rs.DefaultValue;
@@ -28,6 +28,7 @@ public class GetTotalProductionCapacityHandler {
     private final ProductRepository productRepository;
     private final RawMaterialRepository rawMaterialRepository;
 
+    @Inject
     public GetTotalProductionCapacityHandler(ProductRepository productRepository, RawMaterialRepository rawMaterialRepository) {
         this.productRepository = productRepository;
         this.rawMaterialRepository = rawMaterialRepository;
@@ -42,10 +43,12 @@ public class GetTotalProductionCapacityHandler {
         HashMap<Long, Integer> availableMaterials = this.rawMaterialRepository
             .getTotalMaterialsInStock();
 
-        IProductionCalculationStrategy calculationStrategy = switch (strategy) {
-            case 1 -> new HighestEfficiencyStrategy();
-            default -> new HighestPriceStrategy();
-        };
+        IProductionCalculationStrategy calculationStrategy;
+        if (strategy != null && strategy == 1) {
+            calculationStrategy = new HighestEfficiencyStrategy();
+        } else {
+            calculationStrategy = new HighestPriceStrategy();
+        }
 
         TotalProductionResponse response = calculationStrategy.CalculateProduction(allProducts, availableMaterials);
 

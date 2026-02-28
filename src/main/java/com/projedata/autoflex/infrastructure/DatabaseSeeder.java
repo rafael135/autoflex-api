@@ -38,8 +38,22 @@ public class DatabaseSeeder {
         RawMaterial screws = RawMaterial.create("Screw", 1000);
         RawMaterial woodBoard = RawMaterial.create("Wood Board", 50);
         RawMaterial steelPipe = RawMaterial.create("Steel Pipe", 30);
+
+        RawMaterial pcb = RawMaterial.create("PCB", 100);
+        RawMaterial microcontroller = RawMaterial.create("Microcontroller", 50);
+        RawMaterial sensor = RawMaterial.create("Sensor", 200);
         
-        this.rawMaterialRepository.persist(List.of(screws, woodBoard, steelPipe));
+        this.rawMaterialRepository.persist(List.of(screws, woodBoard, steelPipe, pcb, microcontroller, sensor));
+
+        Product lamp = Product.create("Lamp", new BigDecimal(150.0));
+        lamp.addMaterial(steelPipe, 2);
+        lamp.addMaterial(screws, 4);
+        lamp.addMaterial(pcb, 1);
+
+        Product motherboard = Product.create("Motherboard", new BigDecimal(500.0));
+        motherboard.addMaterial(pcb, 2);
+        motherboard.addMaterial(microcontroller, 1);
+        motherboard.addMaterial(sensor, 4);
 
         Product chair = Product.create("Chair", new BigDecimal(200.0));
         chair.addMaterial(woodBoard, 1);
@@ -53,6 +67,6 @@ public class DatabaseSeeder {
         shelf.addMaterial(woodBoard, 5);
         shelf.addMaterial(screws, 10);
 
-        this.productRepository.persist(List.of(chair, table, shelf));
+        this.productRepository.persist(List.of(lamp, motherboard, chair, table, shelf));
     }
 }

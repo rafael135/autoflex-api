@@ -106,7 +106,7 @@ public class Product {
             .mapToInt(m -> m.requiredQuantity)
             .sum();
             
-        if (totalMaterialsRequired == 0) return this.value;
+        if (totalMaterialsRequired == 0) return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         
         return this.value.divide(BigDecimal.valueOf(totalMaterialsRequired), 2, RoundingMode.HALF_UP);
     }
