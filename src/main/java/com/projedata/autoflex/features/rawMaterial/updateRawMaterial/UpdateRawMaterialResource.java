@@ -14,7 +14,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/api/raw-materials/{id}")
+@Path("/api/raw-materials")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UpdateRawMaterialResource {
@@ -28,6 +28,7 @@ public class UpdateRawMaterialResource {
     }
 
     @Transactional
+    @Path("/{id}")
     @PUT
     public Response update(@PathParam("id") Long id, UpdateRawMaterialCommand command) {
         RawMaterial rawMaterial = this.rawMaterialRepository.findById(id);

@@ -34,14 +34,22 @@ public class ListRawMaterialResource {
     @GET
     public Response list(
         @QueryParam("page") @DefaultValue("0") @Min(0) Integer page,
-        @QueryParam("itemsPerPage") @DefaultValue("10") @Min(1) @Max(100) Integer itemsPerPage
+        @QueryParam("itemsPerPage") @DefaultValue("10") @Min(1) @Max(100) Integer itemsPerPage,
+        @QueryParam("name") @DefaultValue("") String name
     ) {
         if(page > 0) {
             page -= 1;
         }
 
-        PanacheQuery<RawMaterial> query = this.rawMaterialRepository.findAll(Sort.by("id").descending())
-            .page(page, itemsPerPage);
+        PanacheQuery<RawMaterial> query;
+
+        if(name.isBlank()) {
+            query = this.rawMaterialRepository.findAll(Sort.by("id").descending())
+                .page(page, itemsPerPage);
+        } else {
+            query = this.rawMaterialRepository.findByNameDescendingById(name)
+                .page(page, itemsPerPage);
+        }
 
         List<RawMaterial> rawMaterials = query
             .stream()

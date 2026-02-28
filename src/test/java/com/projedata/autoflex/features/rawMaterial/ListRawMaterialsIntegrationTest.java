@@ -10,6 +10,7 @@ import io.restassured.http.ContentType;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.containsStringIgnoringCase;
 
 @QuarkusTest
 public class ListRawMaterialsIntegrationTest {
@@ -134,5 +135,35 @@ public class ListRawMaterialsIntegrationTest {
             .get("/api/raw-materials")
         .then()
             .statusCode(400);
+    }
+
+    @Test
+    @DisplayName("Should return filtered results when name query parameter is provided")
+    void shouldReturnFilteredResultsWhenNameQueryParameterIsProvided() {
+        String uniqueName = "Unique Material Name " + System.currentTimeMillis();
+
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .body("""
+                {
+                    "name": "%s",
+                    "initialStock": 15
+                }
+            """.formatted(uniqueName))
+        .when()
+            .post("/api/raw-materials")
+        .then()
+            .statusCode(201);
+
+        RestAssured.given()
+            .contentType(ContentType.JSON)
+            .queryParam("name", uniqueName)
+        .when()
+            .get("/api/raw-materials")
+        .then()
+            .statusCode(200)
+            .body("data.size()", greaterThanOrEqualTo(1))
+            .body("data[0].name", notNullValue())
+            .body("data[0].name", containsStringIgnoringCase(uniqueName));
     }
 }
