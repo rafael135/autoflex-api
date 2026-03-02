@@ -2,6 +2,43 @@
 
 REST API desenvolvida com **Quarkus** e **PostgreSQL** para controle de produção industrial — gerenciamento de produtos, matérias-primas e cálculo da capacidade produtiva com base no estoque disponível.
 
+## Estrutura de pastas
+
+```
+autoflex-api/
+├── docker-compose.yml                  # Sobe o banco PostgreSQL localmente
+├── pom.xml                             # Dependências e configurações Maven/Quarkus
+└── src/
+    ├── main/
+    │   ├── docker/                     # Dockerfiles para deploy (JVM, native, etc.)
+    │   ├── java/com/projedata/autoflex/
+    │   │   ├── domain/                 # Entidades JPA (Product, RawMaterial, ProductMaterial)
+    │   │   ├── features/               # Casos de uso organizados por feature
+    │   │   │   ├── product/            # CRUD de produtos
+    │   │   │   │   ├── createProduct/
+    │   │   │   │   ├── listProducts/
+    │   │   │   │   ├── updateProduct/
+    │   │   │   │   └── deleteProduct/
+    │   │   │   ├── rawMaterial/        # CRUD de matérias-primas
+    │   │   │   │   ├── createRawMaterial/
+    │   │   │   │   ├── listRawMaterial/
+    │   │   │   │   ├── updateRawMaterial/
+    │   │   │   │   └── deleteRawMaterial/
+    │   │   │   ├── production/         # Cálculo da capacidade produtiva
+    │   │   │   │   └── getTotalProductionCapacity/
+    │   │   │   │       ├── dto/        # DTOs de resposta
+    │   │   │   │       └── services/   # Estratégias de cálculo (Strategy Pattern)
+    │   │   │   └── shared/             # DTOs compartilhados (ex: paginação)
+    │   │   └── infrastructure/         # Repositórios Panache, tratamento global de erros e seeder
+    │   └── resources/
+    │       ├── application.properties  # Configurações da aplicação (datasource, CORS, etc.)
+    │       └── db/migration/           # Scripts SQL versionados com Flyway
+    └── test/
+        └── java/com/projedata/autoflex/
+            ├── domain/                 # Testes unitários das entidades de domínio
+            └── features/               # Testes de integração por feature
+```
+
 ## Pré-requisitos
 
 - Java 17+
@@ -38,6 +75,34 @@ A API estará disponível em `http://localhost:8080`.
 ```shell
 ./mvnw test
 ```
+
+---
+
+## Endpoints da API
+
+### Matérias-primas — `/api/raw-materials`
+
+| Método | Rota                    | Descrição                                                            |
+|--------|-------------------------|----------------------------------------------------------------------|
+| GET    | `/api/raw-materials`    | Lista matérias-primas com paginação (`page`, `itemsPerPage`) e filtro por `name` |
+| POST   | `/api/raw-materials`    | Cadastra uma nova matéria-prima                                      |
+| PUT    | `/api/raw-materials/{id}` | Atualiza nome e/ou estoque de uma matéria-prima                    |
+| DELETE | `/api/raw-materials/{id}` | Remove uma matéria-prima                                           |
+
+### Produtos — `/api/products`
+
+| Método | Rota                 | Descrição                                                            |
+|--------|----------------------|----------------------------------------------------------------------|
+| GET    | `/api/products`      | Lista produtos com paginação (`page`, `itemsPerPage`)               |
+| POST   | `/api/products`      | Cadastra um novo produto com seus requisitos de matéria-prima        |
+| PUT    | `/api/products/{id}` | Atualiza nome, valor e/ou matérias-primas de um produto             |
+| DELETE | `/api/products/{id}` | Remove um produto                                                    |
+
+### Capacidade produtiva — `/api/production`
+
+| Método | Rota              | Descrição                                                                                              |
+|--------|-------------------|--------------------------------------------------------------------------------------------------------|
+| GET    | `/api/production` | Calcula e retorna a capacidade produtiva total com base no estoque disponível. Aceita o query param `strategy` (`0` = maior valor, `1` = maior ROI). |
 
 ---
 
