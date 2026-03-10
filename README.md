@@ -1,6 +1,7 @@
 ﻿# autoflex-api
 
 REST API desenvolvida com **Quarkus** e **PostgreSQL** para controle de produção industrial — gerenciamento de produtos, matérias-primas e cálculo da capacidade produtiva com base no estoque disponível.
+> Frontend: [rafael135/autoflex-frontend](https://github.com/rafael135/autoflex-frontend)
 
 ## Pré-requisitos
 
